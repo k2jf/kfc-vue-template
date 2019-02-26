@@ -29,7 +29,7 @@ export default {
       },
       option: {
         title: {
-          text: '新疆哈密烟墩大二期整装天润风电场-F084机组',
+          text: 'Someone changed the title',
           textStyle: {
             color: '#666'
           },
