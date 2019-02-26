@@ -88,7 +88,7 @@ export default {
     // 初始化图表
     init () {
       this.timeSeriesChart = Echarts.init(this.$refs.TimeSeriesChart)
-      this.timeSeriesChart.showLoading({ text: '加载中...' })
+      this.timeSeriesChart.showLoading({ text: 'loading...' })
     },
     // 调用接口获取时序数据
     getTimeSeriesData () {
