@@ -18,6 +18,7 @@ module.exports = {
     // ------------------------------------------------------------------------------
     // vue: need to override
     // ------------------------------------------------------------------------------
+    'vue/no-parsing-error': [2, { 'x-invalid-end-tag': false }],
     'vue/max-attributes-per-line': ['error', {
       'singleline': 2,
       'multiline': {
