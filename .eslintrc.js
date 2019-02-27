@@ -77,7 +77,8 @@ module.exports = {
     // ------------------------------------------------------------------------------
     'vue/attribute-hyphenation': 'off',
     'vue/html-closing-bracket-newline': 'off',
-    'vue/require-default-prop': 'off'
+    'vue/require-default-prop': 'off,'
+    'vue/html-self-closing': 'off'
   },
   parserOptions: {
     parser: 'babel-eslint'
