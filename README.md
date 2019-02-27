@@ -1,2 +1,11 @@
-## vue-base-template
-helping to start a vue with iview project, including some standards which have been picked up with agreement within our team
+#### TimeSeries
+
+用于展示时序图表
+
+author: youli
+
+
+
+| 属性 | 说明     | 类型   | 默认值 |
+| ---- | -------- | ------ | ------ |
+| queryParams  | 请求参数 | Object | -      |
