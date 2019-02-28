@@ -27,17 +27,17 @@ npm install --save echarts
         TimeSeries
     },
     export default {
-    data () {
-        return {
-        queryParams: {
-            'query': "select type, ts,wfid,wtid,WTUR_WSpd_Ra_F32,WTUR_Temp_Ra_F32 from gw_scada_7s_extension where ((type='gw_scada_7s_extension' and wfid = '140604' and wtid = '140604006')) and ts >= '2019-01-11 00:00:00.000' and ts <= '2019-01-11 23:59:59.000'",
-            'resultType': 'REST',
-            'path': 'filestore://',
-            'queueName': 'default_queue',
-            'timeout': 6000
+        data () {
+            return {
+                queryParams: {
+                    'query': "select type, ts,wfid,wtid,WTUR_WSpd_Ra_F32,WTUR_Temp_Ra_F32 from gw_scada_7s_extension where ((type='gw_scada_7s_extension' and wfid = '140604' and wtid = '140604006')) and ts >= '2019-01-11 00:00:00.000' and ts <= '2019-01-11 23:59:59.000'",
+                    'resultType': 'REST',
+                    'path': 'filestore://',
+                    'queueName': 'default_queue',
+                    'timeout': 6000
+                }
+            }
         }
-        }
-    },
     }
 </script>
 ```
