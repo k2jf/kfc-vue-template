@@ -3,7 +3,6 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-import './styles/index.scss'
 import 'iview/dist/styles/iview.css'
 import 'dayjs/locale/zh-cn'
 
