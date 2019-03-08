@@ -7,8 +7,8 @@
 export default {
   name: 'Home',
   mounted () {
-    console.log(this.$baseUrl)
-    console.log(localStorage.getItem('k2_key'))
+    console.log(this.$axios)
+    console.log(sessionStorage.getItem('$kmx-auth-token'))
   }
 }
 </script>

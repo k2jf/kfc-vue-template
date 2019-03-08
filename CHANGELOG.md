@@ -1,5 +1,15 @@
 # Changelog
 
+## 2019-3-8
+
+### New features
+* 增加接口请求实现，组件内使用 `this.$axios` 发起请求，使用及配置[在这里](./src/libs/kfc-axios/README.md)
+
+### Changes
+* 删除 `this.$baseUrl`
+* 删除 `localStorage.getItem('k2_key')`
+
+
 ## 2019-3-7
 
 ### New features

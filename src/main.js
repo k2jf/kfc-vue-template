@@ -3,13 +3,19 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import config from './config'
+import kfcAxios from './libs/kfc-axios'
 
 import 'iview/dist/styles/iview.css'
 import 'dayjs/locale/zh-cn'
 
-Vue.config.productionTip = false
+Vue.use(kfcAxios, {
+  baseUrl: config.baseUrl,
+  login: function () {
+    console.warn('需要自己实现')
+  }
+})
 
-Vue.prototype.$baseUrl = config.baseUrl
+Vue.config.productionTip = false
 
 new Vue({
   router,
@@ -17,4 +23,4 @@ new Vue({
   render: h => h(App)
 }).$mount('#app')
 
-localStorage.setItem('k2_key', config.k2Key)
+sessionStorage.setItem('$kmx-auth-token', config.k2Key)
