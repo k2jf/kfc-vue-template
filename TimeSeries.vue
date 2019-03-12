@@ -4,7 +4,7 @@
 
 <script>
 import Echarts from 'echarts'
-import { api } from '@/api/auth'
+import { api } from './api'
 
 export default {
   name: 'TimeSeries',
