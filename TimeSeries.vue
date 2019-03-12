@@ -1,18 +1,25 @@
 <template>
-  <div ref="TimeSeriesChart" class="chart-container" />
+  <div class="chart-container" ref="TimeSeriesChart" />
 </template>
 
 <script>
 import Echarts from 'echarts'
+import { api } from '@/api/auth'
 
 export default {
   name: 'TimeSeries',
   props: {
     queryParams: {
       type: Object,
-      required: true,
+      required: false,
       default () {
-        return {}
+        return {
+          'query': 'select type, ts,wfid,wtid,WTUR_WSpd_Ra_F32,WTUR_Temp_Ra_F32 from gw_scada_7s_extension where ((type=\'gw_scada_7s_extension\' and wfid = \'140604\' and wtid = \'140604006\')) and ts >= \'2019-01-11 00:00:00.000\' and ts <= \'2019-01-11 23:59:59.000\'',
+          'resultType': 'REST',
+          'path': 'filestore://',
+          'queueName': 'default_queue',
+          'timeout': 6000
+        }
       }
     }
   },
@@ -78,6 +85,16 @@ export default {
       }
     }
   },
+  watch: {
+    timeSeriesData: {
+      handler (curVal, oldVal) {
+        if (curVal) {
+          this.showTimeSeriesChart()
+        }
+      },
+      deep: true
+    }
+  },
   created () {
     this.getTimeSeriesData()
   },
@@ -92,21 +109,9 @@ export default {
     },
     // 调用接口获取时序数据
     getTimeSeriesData () {
-      let token = 'eyJjdHkiOiJKV1QiLCJlbmMiOiJBMTkyQ0JDLUhTMzg0IiwiYWxnIjoiZGlyIn0..DKInRzSv705fETH7equI1Q.Je2FVCpN_G2umkeLSexnmpTQZz2TWfOhLgG39iYspF1vyQfq3xtvXBxRCPdrQhN4MLPLEXRTlPx1cbDsuu0o9DA7DbwiU82x2ojTgFCVy5HvRi_uKtJW_2nAetFUopoi-EmYPhI44xrITztR_aE0x83Em95ijchagmCu012uBqZdv9nKht3DFsUIMvF4CSLFJMa0tFE274D1yQI_456_5ixhCb7-NggOrJ5Z_0w2BwPl4hyncLpH_i33KdQKoiGvD-E1EtbAsKq007Gk0N6pkQ.APvHmLOA3uFkJAL3wnZba8o5vJTds0zL'
-
-      var xhr = new XMLHttpRequest()
-      var url = 'http://10.12.20.36:8124/batch-rest/dataset'
-      var body = this.queryParams
-
-      xhr.open('POST', url, true)
-      xhr.setRequestHeader('K2_KEY', token)
-      xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-          this.timeSeriesData = JSON.parse(xhr.responseText).body.results
-        }
-      }
-      xhr.send(JSON.stringify(body))
+      this.$axios.post(`${api.timeSeries}`, this.queryParams).then(res => {
+        this.timeSeriesData = res.data.body.results
+      })
     },
     // 时序折线图
     showTimeSeriesChart () {
@@ -149,16 +154,6 @@ export default {
       }, [])
 
       return seriesData
-    }
-  },
-  watch: {
-    timeSeriesData: {
-      handler (curVal, oldVal) {
-        if (curVal) {
-          this.showTimeSeriesChart()
-        }
-      },
-      deep: true
     }
   },
   beforDestory () {
