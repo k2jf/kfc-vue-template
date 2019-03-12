@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Login from '@/components/login/login'
+import Login from '@/components/kfc-login/login'
 export default {
   name: 'login-page',
   components: {
