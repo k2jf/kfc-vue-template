@@ -1,25 +1,48 @@
 <template>
   <div class="container">
     <div class="prompt">
-      <h1 style="margin: 20px 0; color: #333333;">kfc-login</h1>
-      <i-form id="login" ref="formInline" :model="formInline" :rules="ruleInline" inline>
+      <h1 style="margin: 20px 0; color: #333333">
+        KFC-Login
+      </h1>
+      <i-form
+        :model="formInline"
+        :rules="ruleInline"
+        inline
+        id="login"
+        ref="formInline"
+      >
         <i-form-item prop="username">
-          <i-input type="text" v-model="formInline.username" placeholder="请输入用户名" style="width: 300px">
-            <i-icon type="ios-person-outline" slot="prepend"/>
+          <i-input
+            type="text"
+            style="width: 300px"
+            placeholder="请输入用户名"
+            v-model="formInline.username"
+          >
+            <i-icon type="ios-person-outline" slot="prepend"></i-icon>
           </i-input>
         </i-form-item>
         <br>
         <i-form-item prop="password">
-          <i-input type="password" v-model="formInline.password" placeholder="请输入密码" style="width: 300px" @on-enter="handleSubmit('formInline')">
-            <i-icon type="ios-lock-outline" slot="prepend"/>
+          <i-input
+            type="password"
+            style="width: 300px"
+            placeholder="请输入密码"
+            v-model="formInline.password"
+            @on-enter="handleSubmit('formInline')"
+          >
+            <i-icon type="ios-lock-outline" slot="prepend"></i-icon>
           </i-input>
         </i-form-item>
         <br>
         <i-form-item>
-          <i-button type="primary" @click="handleSubmit('formInline')">登录</i-button>
+          <i-button type="primary" @click="handleSubmit('formInline')">
+            登录
+          </i-button>
         </i-form-item>
         <i-form-item>
-          <i-button type="primary" @click="handleCancle()">取消</i-button>
+          <i-button type="primary" @click="handleCancle()">
+            取消
+          </i-button>
         </i-form-item>
       </i-form>
     </div>
@@ -33,7 +56,7 @@
 import { Form, FormItem, Input, Icon, Button } from 'iview'
 
 export default {
-  name: 'login',
+  name: 'Login',
   components: {
     'i-form': Form,
     'i-form-item': FormItem,
@@ -62,13 +85,20 @@ export default {
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          if (this.formInline.username === 'admin' && this.formInline.password === '123456') {
-            this.$Message.success('验证成功，跳转首页')
-          } else {
-            this.$Message.error('用户名或密码错误。')
-          }
+          let param =
+            {
+              username: this.formInline.username,
+              password: this.formInline.password
+            }
+          this.$axios.post('/kmx_login', param).then(res => {
+            if (res.message === 'success') {
+              this.$Message.success('验证成功，跳转首页')
+            } else {
+              this.$Message.error('用户名或密码错误')
+            }
+          })
         } else {
-          this.$Message.error('请输入正确的用户名或密码。')
+          this.$Message.error('请输入正确的用户名或密码')
         }
       })
     },
