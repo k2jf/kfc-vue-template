@@ -156,6 +156,11 @@ export default function (Vue, options) {
   })
 
   // iview's message popup
+  if (!Vue.prototype.$Message) {
+    console.error('you may use babel-plugin-import plugin for avoiding importing useless component,\n' +
+      'therefore you need add `Message` to Vue.prototype firstly in main.js, \n' +
+      'like this: \n' + '`import { Message } from \'iview\' \n' + 'Vue.prototype.$Message = Message`')
+  }
   const tip = Vue.prototype.$Message
 
   axios.interceptors.response.use(function onSuccess (resp) {
