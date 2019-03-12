@@ -1,0 +1,112 @@
+<template>
+  <div class="container">
+    <div class="prompt">
+      <h1 style="margin: 20px 0; color: #333333;">kfc-login</h1>
+      <i-form id="login" ref="formInline" :model="formInline" :rules="ruleInline" inline>
+        <i-form-item prop="username">
+          <i-input type="text" v-model="formInline.username" placeholder="请输入用户名" style="width: 300px">
+            <i-icon type="ios-person-outline" slot="prepend"/>
+          </i-input>
+        </i-form-item>
+        <br>
+        <i-form-item prop="password">
+          <i-input type="password" v-model="formInline.password" placeholder="请输入密码" style="width: 300px" @on-enter="handleSubmit('formInline')">
+            <i-icon type="ios-lock-outline" slot="prepend"/>
+          </i-input>
+        </i-form-item>
+        <br>
+        <i-form-item>
+          <i-button type="primary" @click="handleSubmit('formInline')">登录</i-button>
+        </i-form-item>
+        <i-form-item>
+          <i-button type="primary" @click="handleCancle()">取消</i-button>
+        </i-form-item>
+      </i-form>
+    </div>
+    <div class="copy-right">
+      2019 © K2DATA × KFC
+    </div>
+  </div>
+</template>
+
+<script>
+import { Form, FormItem, Input, Icon, Button } from 'iview'
+
+export default {
+  name: 'login',
+  components: {
+    'i-form': Form,
+    'i-form-item': FormItem,
+    'i-input': Input,
+    'i-icon': Icon,
+    'i-button': Button
+  },
+  data () {
+    return {
+      formInline: {
+        username: '',
+        password: ''
+      },
+      ruleInline: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { type: 'string', min: 6, message: '密码不能少于6位', trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  methods: {
+    handleSubmit (name) {
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          if (this.formInline.username === 'admin' && this.formInline.password === '123456') {
+            this.$Message.success('验证成功，跳转首页')
+          } else {
+            this.$Message.error('用户名或密码错误。')
+          }
+        } else {
+          this.$Message.error('请输入正确的用户名或密码。')
+        }
+      })
+    },
+    handleCancle () {
+      this.formInline.username = ''
+      this.formInline.password = ''
+    }
+  }
+}
+</script>
+
+<style scoped>
+  .prompt {
+    width: 44em;
+    height: 20em;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -22em;
+    margin-top: -10em;
+    /*outline: 2px solid red;*/
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .container {
+    width: 100vw;
+    height: 100vh;
+    background: no-repeat center / cover url("login-bg.jpg");
+  }
+
+  .copy-right {
+    color: #FEFEFE;
+    font-size: 16px;
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.7);
+  }
+</style>
