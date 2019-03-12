@@ -2,6 +2,11 @@
 
 ## 2019-3-8
 
+### Changes
+* 将 baseUrl 设置为 `http://localhost:9080/`，可在 `.env.dev` 文件中更改
+* 前端不再维护 `K2_KEY`，放在后台维护
+* 修复了一个 axios 请求问题
+
 ### New features
 * 增加接口请求实现，组件内使用 `this.$axios` 发起请求，使用及配置[在这里](./src/libs/kfc-axios/README.md)
 
