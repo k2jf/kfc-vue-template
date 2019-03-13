@@ -5,9 +5,9 @@
 </template>
 
 <script>
-import Login from '@/components/kfc-login/login'
+import Login from '@/components/kfc-login/Login'
 export default {
-  name: 'login-page',
+  name: 'LoginPage',
   components: {
     Login
   }
@@ -17,6 +17,7 @@ export default {
 <style scoped>
 
 </style>
+
 
 
 ```
