@@ -75,8 +75,7 @@ export default {
           { required: true, message: '请输入用户名', trigger: 'blur' }
         ],
         password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { type: 'string', min: 6, message: '密码不能少于6位', trigger: 'blur' }
+          { required: true, message: '请输入密码', trigger: 'blur' }
         ]
       }
     }
@@ -91,11 +90,7 @@ export default {
               password: this.formInline.password
             }
           this.$axios.post('/kmx_login', param).then(res => {
-            if (res.message === 'success') {
-              this.$Message.success('验证成功，跳转首页')
-            } else {
-              this.$Message.error('用户名或密码错误')
-            }
+            this.$router.push('/')
           })
         } else {
           this.$Message.error('请输入正确的用户名或密码')
