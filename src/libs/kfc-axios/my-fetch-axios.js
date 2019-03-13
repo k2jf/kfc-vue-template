@@ -1,4 +1,5 @@
 import Axios from 'axios'
+import { Message } from 'iview'
 
 const getQueryString = function (params) {
   if (!params) { return '' }
@@ -126,7 +127,7 @@ const fetchEngine = function (config) {
     })
 }
 
-export default function (Vue, options) {
+export default function internalInstall (Vue, options) {
   const baseUrl = options.baseUrl || ''
   const keyName = options.keyName || 'K2_KEY'
 
@@ -155,51 +156,55 @@ export default function (Vue, options) {
     }
   })
 
-  // iview's message popup
-  if (!Vue.prototype.$Message) {
-    console.error('you may use babel-plugin-import plugin for avoiding importing useless component,\n' +
-      'therefore you need add `Message` to Vue.prototype firstly in main.js, \n' +
-      'like this: \n' + '`import { Message } from \'iview\' \n' + 'Vue.prototype.$Message = Message`')
-  }
-  const tip = Vue.prototype.$Message
+  /*
+   * manually install $Message in case iview not being globally installed
+   *
+   * `Message` is kind of an expensive instance but is lazy-initialized.
+   * Thus `import { Message } from 'iview'` is safe.
+   * If tip is assigned to `Message`, it will be a stand-alone message instance
+   */
+  const tip = Vue.prototype.$Message || Message
 
   axios.interceptors.response.use(function onSuccess (resp) {
     return resp
   }, function onFailure (error) {
+    // extract option 'silent' from all kinds of rejected Promises
+    const allowPopup = !(error.config && error.config.silent)
+
     if (error.message === '302') { // 1. handle CAS Login redirect
-      tip.error('登录信息失效，请重新登录！')
+      allowPopup && tip.error('登录信息失效，请重新登录！')
       login()
       throw new Error('need login')
     } else if (error.message === 'network') { // 2. handle network error
-      tip.error('网络中断，请稍候重试')
+      allowPopup && tip.error('网络中断，请稍候重试')
       throw new Error('network error')
     } else if (error.response) {
       var statusCode = error.response.status
 
       if (statusCode === 401) { // 3.1. 401 UnAuthorized
-        tip.error('登录信息失效，请重新登录！')
+        allowPopup && tip.error('登录信息失效，请重新登录！')
         login()
         throw new Error('need login')
       } else if (statusCode === 403) { // 3.2 403 Forbidden
-        tip.error({
+        allowPopup && tip.error({
           content: '操作被阻止：权限不足',
           duration: 3
         })
         throw new Error('forbidden')
       } else if (statusCode === 404) { // 3.3 404 Not Found
-        tip.warning({
+        allowPopup && tip.warning({
           content: '[404 Not Found] 您要访问的接口不存在<br/>' + error.config.url,
           duration: 3
         })
         throw new Error('404')
       } else if (statusCode === 500) { // 3.4 500 internal error
-        tip.error({
+        allowPopup && tip.error({
           content: `服务器开小差了：${error.response.data.message}`,
           duration: 3
         })
         throw new Error('api server error')
       } else { // 3.5 400, or other error in response
-        tip.error({
+        allowPopup && tip.error({
           content: `[${statusCode}] ${error.response.data.message}`,
           duration: 3
         })
@@ -207,7 +212,7 @@ export default function (Vue, options) {
       }
     } else if (error.request) { // 4. request valid, but no response
       console.error('request error: %o', error.request)
-      tip.error({
+      allowPopup && tip.error({
         content: `${error.message}`,
         duration: 3
       })
