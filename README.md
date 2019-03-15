@@ -51,3 +51,27 @@ git subtree push -P src/components/kfc-timeseries-chart kfc-timeseries-chart bra
 
 
 ```
+
+# kfc.sh工具
+
+这个脚本工具用于简化书写git subtree命令，因为后者比较长而且需要重复书写组件名称。
+脚本使用方法如下：
+```bash
+./kfc.sh add <component> <branch>
+相当于：
+git remote add -f <component> git@github.com:k2jf/<component>.git
+git subtree add -P src/components/<component> <component> <branch>
+
+./kfc.sh pull <component> <branch>
+相当于：
+git subtree pull -P src/components/<component> <component> <branch>
+
+./kfc.sh push <component> <branch>
+相当于：
+git subtree push -P src/components/<component> <component> <branch>
+```
+
+如果是在cygwin环境下使用，请将core.autocrlf配置为input以便脚本能够正确运行：
+```bash
+git config --global core.autocrlf input
+```
