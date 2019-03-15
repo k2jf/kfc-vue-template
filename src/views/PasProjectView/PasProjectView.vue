@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import PasProjectDetail from '@/components/PasProjectDetail'
+import PasProjectDetail from '@/components/kfc-project-detail'
 export default {
   components: {
     PasProjectDetail
